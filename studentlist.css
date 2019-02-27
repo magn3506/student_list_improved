@@ -73,7 +73,7 @@ th {
 .image {
   padding: 0px;
 }
-img {
+.image img {
   height: 100%;
 }
 
@@ -89,10 +89,74 @@ img {
 }
 
 .modal_con {
-  background: white;
   position: relative;
   max-width: 500px;
+  height: 300px;
   margin: 0 auto;
   opacity: 1;
   top: 25%;
+  padding: 10px;
+
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.modal_content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+
+  border-radius: 2px;
+  border: solid 3px rgba(128, 128, 128, 0.404);
+}
+.details_con {
+  padding-left: 20px;
+}
+
+.details_con > * {
+  padding-top: 10px;
+  font-family: "Satisfy", cursive;
+  font-size: 0.8em;
+}
+
+.modal_fullname,
+.modal_house {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 1.5em;
+}
+
+.modal_img_con {
+  background: rgba(128, 128, 128, 0.404);
+  height: 100%;
+  display: grid;
+}
+
+.modal_img {
+  width: 200px;
+  align-self: center;
+  position: relative;
+  margin: 0 auto;
+}
+
+.modal_close {
+  position: absolute;
+  left: -17px;
+  top: -25px;
+  background: none;
+  color: wheat;
+  border: 5px solid rgba(255, 255, 255, 0.404);
+  border-radius: 0px;
+  padding: 2px 50px 50px 2px;
+  z-index: -1;
+  font-weight: 900;
+  text-transform: uppercase;
+  transition: 0.4s ease-in-out;
+}
+.modal_close:hover {
+  background: rgba(212, 18, 18, 0.753);
+  letter-spacing: 1px;
+  transition: 0.4s ease-in-out;
+  left: -32px;
+  top: -36px;
 }

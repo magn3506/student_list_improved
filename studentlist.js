@@ -8,6 +8,7 @@ let studOutput = document.querySelector("#stud_list_wrap");
 let allStud;
 let houseData = "alle";
 let filteredList;
+let modal;
 
 // Student Prototype
 const studentPrototype = {
@@ -123,8 +124,6 @@ function filterByHouse(house) {
   return newStudArray.filter(filterHouse);
 }
 
-// TODO: Create scaffolding functions for the rest!
-
 function clickSortBy() {
   document.querySelectorAll(".sort_knap").forEach(knap => {
     knap.addEventListener("click", function() {
@@ -188,15 +187,16 @@ function displayList(students) {
     clone.querySelector(".first_name").textContent = stud.firstname;
     clone.querySelector(".last_name").textContent = stud.lastname;
     clone.querySelector(".house").textContent = stud.house;
-    // calls makemodal.
-    clone.querySelector(".stud_wrap").addEventListener("click", () => {
-      makeModal(stud);
-    });
 
     //SET HOUSE COCLOR
     clone
       .querySelector(".stud_wrap")
       .classList.add(`${stud.house.toLocaleLowerCase()}`);
+
+    // calls makemodal.
+    clone.querySelector(".stud_wrap").addEventListener("click", () => {
+      makeModal(stud);
+    });
 
     studOutput.appendChild(clone);
 
@@ -210,8 +210,10 @@ function clearList() {
 
 // MODAL -------------------------------------------
 function makeModal(stud) {
-  let modal = document.querySelector("#modal_wrapper");
-  showModal(modal);
+  modal = document.querySelector("#modal_wrapper");
+  showModal(modal, stud);
+
+  console.log(stud.house);
 
   let imagePath = "images/" + stud.image + ".png";
   modal.querySelector(".modal_img").src = imagePath;
@@ -219,13 +221,45 @@ function makeModal(stud) {
   modal.querySelector(".modal_fullname").textContent = stud.fullname;
   modal.querySelector(".modal_house").textContent = stud.house;
 
+  //SET HOUSE COCLOR
+
   document.querySelector(".modal_close").addEventListener("click", () => {
     hideModal(modal);
   });
 }
 
-function showModal(modal) {
+function showModal(modal, stud) {
   modal.style.display = "block";
+
+  //DRYYYYYYYYY!!!!!
+  if (stud.house === "Gryffindor") {
+    modal.querySelector(".modal_con").classList.add("gryffindor");
+    modal.querySelector(".modal_con").classList.remove("hufflepuff");
+    modal.querySelector(".modal_con").classList.remove("ravenclaw");
+    modal.querySelector(".modal_con").classList.remove("slytherin");
+  }
+
+  if (stud.house === "Hufflepuff") {
+    modal.querySelector(".modal_con").classList.add("hufflepuff");
+    modal.querySelector(".modal_con").classList.remove("ravenclaw");
+    modal.querySelector(".modal_con").classList.remove("slytherin");
+    modal.querySelector(".modal_con").classList.remove("gryffindor");
+  }
+
+  if (stud.house === "Ravenclaw") {
+    modal.querySelector(".modal_con").classList.add("ravenclaw");
+    modal.querySelector(".modal_con").classList.remove("hufflepuff");
+    modal.querySelector(".modal_con").classList.remove("slytherin");
+    modal.querySelector(".modal_con").classList.remove("gryffindor");
+  }
+
+  if (stud.house === "Slytherin") {
+    modal.querySelector(".modal_con").classList.add("slytherin");
+    modal.querySelector(".modal_con").classList.remove("hufflepuff");
+    modal.querySelector(".modal_con").classList.remove("ravenclaw");
+    modal.querySelector(".modal_con").classList.remove("gryffindor");
+  }
+  //DRYYYY!Y!!Y!Y!Y
 }
 
 function hideModal(modal) {
