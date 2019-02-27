@@ -67,7 +67,7 @@ async function getJSON() {
   console.log("getJSON");
 
   let jsonObject = await fetch(
-    "http://petlatkea.dk/2019/hogwarts/students.json"
+    "https://petlatkea.dk/2019/hogwarts/students.json"
   );
 
   allStud = await jsonObject.json();

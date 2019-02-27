@@ -77,6 +77,11 @@ th {
   height: 100%;
 }
 
+#table_wrapper {
+  height: 500px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
 /* MODAL */
 
 #modal_wrapper {
@@ -100,6 +105,7 @@ th {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+  box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.465);
 }
 
 .modal_content {
@@ -147,11 +153,13 @@ th {
   color: wheat;
   border: 5px solid rgba(255, 255, 255, 0.404);
   border-radius: 0px;
-  padding: 2px 50px 50px 2px;
+  padding: 2px 50px 50px 5px;
   z-index: -1;
   font-weight: 900;
-  text-transform: uppercase;
+  text-transform: capitalize;
   transition: 0.4s ease-in-out;
+  font-family: "Satisfy", cursive;
+  /* font-family: "Nanum Myeongjo", serif; */
 }
 .modal_close:hover {
   background: rgba(212, 18, 18, 0.753);
