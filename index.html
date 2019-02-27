@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student List 2</title>
+    <link rel="stylesheet" href="studentlist.css" type="text/css" />
+  </head>
+  <body>
+    <h1>Students 1991</h1>
+    <header>
+      <nav>
+        <div class="sort_con">
+          Sort by:
+          <button class="sort_knap" data-sort="firstname">First name</button>
+          <button class="sort_knap" data-sort="lastname">Last name</button>
+          <!-- <button class="sort_knap">house</button> -->
+        </div>
+        <div class="filter_con">
+          Filter by:
+          <button class="filter_knap" data-house="alle">alle</button>
+          <button class="filter_knap gryffindor" data-house="Gryffindor">
+            Gryffindor
+          </button>
+          <button class="filter_knap hufflepuf" data-house="Hufflepuff">
+            Hufflepuff
+          </button>
+          <button class="filter_knap ravenclaw" data-house="Ravenclaw">
+            Ravenclaw
+          </button>
+          <button class="filter_knap slytherin" data-house="Slytherin">
+            Slytherin
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <section id="table_wrapper">
+      <table id="stud_list_wrap"></table>
+    </section>
+
+    <!-- MODAL WINDOW  -->
+    <section id="modal_wrapper">
+      <article class="modal_con">
+        <button class="modal_close">X</button>
+        <div class="modal_img_con"><img class="modal_img" src="" alt="" /></div>
+        <div class="modal_fullname"></div>
+        <div class="modal_house"></div>
+      </article>
+    </section>
+
+    <!-- TEMPLATE FOR PRINT VIA JS -->
+    <template id="student_template">
+      <tr class="stud_wrap">
+        <td class="first_name"></td>
+        <td class="last_name"></td>
+        <td class="house"></td>
+        <td class="image"><img class="stud_image" src="" alt="" /></td>
+      </tr>
+    </template>
+
+    <script src="studentlist.js"></script>
+  </body>
+</html>

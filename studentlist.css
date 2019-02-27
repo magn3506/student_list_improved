@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
+  padding: 0;
+  margin: 0;
+}
+
+.gryffindor {
+  background-color: #ce3a0a;
+  color: #fdb02e;
+}
+
+.hufflepuff {
+  background-color: #ffc02a;
+  color: #0b0000;
+}
+
+.ravenclaw {
+  background-color: #395f9d;
+  color: #e9ba36;
+}
+
+.slytherin {
+  background-color: #588c39;
+  color: #c0b1c6;
+}
+
+button {
+  border-style: none;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 2px;
+
+  cursor: pointer;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* STUDENLIST  */
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  height: 25px;
+}
+
+/* tr:nth-child(even) {
+  background-color: #dddddd;
+} */
+
+.stud_wrap:hover {
+  background: grey;
+  color: white;
+  cursor: pointer;
+}
+
+.image {
+  padding: 0px;
+}
+img {
+  height: 100%;
+}
+
+/* MODAL */
+
+#modal_wrapper {
+  background: rgba(0, 0, 0, 0.65);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  display: none;
+}
+
+.modal_con {
+  background: white;
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+  opacity: 1;
+  top: 25%;
+}
