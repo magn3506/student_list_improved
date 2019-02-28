@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   background-color: aliceblue;
   padding: 0;
@@ -52,6 +56,10 @@ table {
   width: 100%;
 }
 
+th {
+  background: rgb(230, 230, 230);
+}
+
 td,
 th {
   border: 1px solid #dddddd;
@@ -77,15 +85,15 @@ th {
   height: 100%;
 }
 
-#table_wrapper {
+/* #table_wrapper {
   height: 500px;
   overflow: scroll;
   scroll-behavior: smooth;
-}
+} */
 /* MODAL */
 
 #modal_wrapper {
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.856);
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -118,6 +126,8 @@ th {
 }
 .details_con {
   padding-left: 20px;
+  display: grid;
+  grid-template-rows: 50px 50px 1fr;
 }
 
 .details_con > * {
@@ -130,6 +140,26 @@ th {
 .modal_house {
   font-family: "Nanum Myeongjo", serif;
   font-size: 1.5em;
+}
+
+.expel_but_con {
+  display: grid;
+}
+.expel_but {
+  align-self: flex-end;
+  margin: 0px 20px 10px 0px;
+  height: 50px;
+  font-family: "Satisfy", cursive;
+  text-transform: capitalize;
+  background: goldenrod;
+
+  font-size: 1.5em;
+}
+.expel_but:hover {
+  background: darkred;
+  transition: 0.1s ease-in-out;
+  color: white;
+  text-decoration: underline;
 }
 
 .modal_img_con {
@@ -162,9 +192,13 @@ th {
   /* font-family: "Nanum Myeongjo", serif; */
 }
 .modal_close:hover {
-  background: rgba(212, 18, 18, 0.753);
+  background: rgba(200, 152, 30, 0.87);
   letter-spacing: 1px;
   transition: 0.4s ease-in-out;
+  color: rgb(112, 33, 33);
+  text-decoration: underline;
+  border-radius: 2px;
+  font-size: 0.9em;
   left: -32px;
   top: -36px;
 }
