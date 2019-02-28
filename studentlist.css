@@ -85,11 +85,11 @@ th {
   height: 100%;
 }
 
-/* #table_wrapper {
+#table_wrapper {
   height: 500px;
   overflow: scroll;
   scroll-behavior: smooth;
-} */
+}
 /* MODAL */
 
 #modal_wrapper {

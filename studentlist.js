@@ -317,6 +317,8 @@ function removeStudent(event) {
   let removeStudObjekt = newStudArray.splice(selectedStudentIndex, 1);
   filterList(houseData);
   expelledStudentsArr.push(...removeStudObjekt);
+
+  displayExpelled(expelledStudentsArr);
   console.table(expelledStudentsArr);
   console.table(newStudArray);
 }
@@ -330,13 +332,44 @@ function findIndexByStudName(name) {
 
 function tjekBloodStatus(lastname) {
   let halfList = bloodList.half;
-  // let pureList = bloodList.pure;
+  let pureList = bloodList.pure;
 
-  for (let i = 0; i < halfList.length; i++) {
-    if (lastname === halfList[i]) {
-      return "Mud-blood";
-    } else {
-      return "Pure-blood";
+  let half = false;
+  let pure = false;
+
+  bloodTjek();
+  function bloodTjek() {
+    for (let i = 0; i < halfList.length; i++) {
+      console.log(lastname);
+      if (lastname === halfList[i]) {
+        half = true;
+      }
+    }
+    for (let i = 0; i < pureList.length; i++) {
+      if (lastname === pureList[i]) {
+        pure = true;
+      }
     }
   }
+
+  if (pure == true && half == true) {
+    return "Mudd Blood";
+  } else if (pure == false && half == true) {
+    return "Mudd Blood";
+  } else if (pure == true && half == false) {
+    return "Pure";
+  } else if (pure == false && half == false) {
+    return "Muggle";
+  }
+}
+
+//DISPLAY Expledded STUDENT LIST
+function displayExpelled(expelStudList) {
+  console.log(expelStudList);
+  document.querySelector(".expel_stud_con").textContent = "";
+  expelStudList.forEach(exStud => {
+    let li = document.createElement("li");
+    li.textContent = exStud.fullname;
+    document.querySelector(".expel_stud_con").appendChild(li);
+  });
 }
