@@ -9,6 +9,7 @@ let allStud;
 let houseData = "alle";
 let filteredList;
 let modal;
+let expelledStudentsArr = [];
 
 // Student Prototype
 const studentPrototype = {
@@ -59,8 +60,6 @@ function init() {
 
   // FILTER BUTTONS
   clickFilterByHouse();
-
-  //click sort by
 }
 // Fetches Json data
 async function getJSON() {
@@ -124,6 +123,7 @@ function filterByHouse(house) {
   return newStudArray.filter(filterHouse);
 }
 
+// SORTING
 function clickSortBy() {
   document.querySelectorAll(".sort_knap").forEach(knap => {
     knap.addEventListener("click", function() {
@@ -131,13 +131,18 @@ function clickSortBy() {
       let sortData = this.getAttribute("data-sort");
       // FUNCTION THAT CLEARS INNTER HTML OF OUTPUT
       if (sortData === "firstname") {
-        let firtNameSort = filteredList.sort(sortListByFirstName);
-        displayList(firtNameSort);
+        newStudArray.sort(sortListByFirstName);
+        filterList(houseData);
       }
       if (sortData === "lastname") {
         console.log(sortData);
-        let LastNameSort = filteredList.sort(sortListByLAstName);
-        displayList(LastNameSort);
+        newStudArray.sort(sortListByLAstName);
+        filterList(houseData);
+      }
+      if (sortData === "house") {
+        console.log(sortData);
+        newStudArray.sort(sortListByHouse);
+        filterList("alle");
       }
     });
   });
@@ -159,8 +164,8 @@ function sortListByLAstName(a, b) {
   }
 }
 
-function sortListByLAstName(a, b) {
-  if (a.lastname < b.lastname) {
+function sortListByHouse(a, b) {
+  if (a.house < b.house) {
     return -1;
   } else {
     return 1;
@@ -187,15 +192,20 @@ function displayList(students) {
     clone.querySelector(".first_name").textContent = stud.firstname;
     clone.querySelector(".last_name").textContent = stud.lastname;
     clone.querySelector(".house").textContent = stud.house;
-
+    clone.querySelector(".expel_but").dataset.id = stud.firstname;
     //SET HOUSE COCLOR
     clone
       .querySelector(".stud_wrap")
       .classList.add(`${stud.house.toLocaleLowerCase()}`);
 
     // calls makemodal.
-    clone.querySelector(".stud_wrap").addEventListener("click", () => {
-      makeModal(stud);
+    clone.querySelector(".stud_wrap").addEventListener("click", event => {
+      let buttData = event.target.dataset.id;
+      if (buttData === stud.firstname) {
+        removeStudent(event);
+      } else {
+        makeModal(stud);
+      }
     });
 
     studOutput.appendChild(clone);
@@ -220,11 +230,17 @@ function makeModal(stud) {
 
   modal.querySelector(".modal_fullname").textContent = stud.fullname;
   modal.querySelector(".modal_house").textContent = stud.house;
+  modal.querySelector(".expel_but").dataset.id = stud.firstname;
 
   //SET HOUSE COCLOR
 
   document.querySelector(".modal_close").addEventListener("click", () => {
     hideModal(modal);
+  });
+  modal.querySelector(".expel_but").addEventListener("click", event => {
+    console.log(event.target);
+    hideModal(modal);
+    removeStudent(event);
   });
 }
 
@@ -234,36 +250,29 @@ function showModal(modal, stud) {
   //DRYYYYYYYYY!!!!!
   if (stud.house === "Gryffindor") {
     modal.querySelector(".modal_con").classList.add("gryffindor");
-    modal.querySelector(".modal_con").classList.remove("hufflepuff");
-    modal.querySelector(".modal_con").classList.remove("ravenclaw");
-    modal.querySelector(".modal_con").classList.remove("slytherin");
   }
 
   if (stud.house === "Hufflepuff") {
     modal.querySelector(".modal_con").classList.add("hufflepuff");
-    modal.querySelector(".modal_con").classList.remove("ravenclaw");
-    modal.querySelector(".modal_con").classList.remove("slytherin");
-    modal.querySelector(".modal_con").classList.remove("gryffindor");
   }
 
   if (stud.house === "Ravenclaw") {
     modal.querySelector(".modal_con").classList.add("ravenclaw");
-    modal.querySelector(".modal_con").classList.remove("hufflepuff");
-    modal.querySelector(".modal_con").classList.remove("slytherin");
-    modal.querySelector(".modal_con").classList.remove("gryffindor");
   }
 
   if (stud.house === "Slytherin") {
     modal.querySelector(".modal_con").classList.add("slytherin");
-    modal.querySelector(".modal_con").classList.remove("hufflepuff");
-    modal.querySelector(".modal_con").classList.remove("ravenclaw");
-    modal.querySelector(".modal_con").classList.remove("gryffindor");
   }
   //DRYYYY!Y!!Y!Y!Y
 }
 
 function hideModal(modal) {
   modal.style.display = "none";
+
+  modal.querySelector(".modal_con").classList.remove("hufflepuff");
+  modal.querySelector(".modal_con").classList.remove("ravenclaw");
+  modal.querySelector(".modal_con").classList.remove("gryffindor");
+  modal.querySelector(".modal_con").classList.remove("slytherin");
 }
 // MODAL END ----------------------------------------
 
@@ -274,10 +283,27 @@ function creatTableHeader() {
   document.querySelector("#stud_list_wrap").appendChild(tr);
 
   // FOR LOOP CREATES TABLE HEADER
-  let tableHeaerArr = ["Firstname", "Lastname", "House", "Image"];
-  for (let i = 0; i < 4; i++) {
+  let tableHeaerArr = ["Firstname", "Lastname", "House", "Image", "Expel"];
+  for (let i = 0; i < 5; i++) {
     let th = document.createElement("th");
     th.textContent = tableHeaerArr[i];
     document.querySelector("#tableHeader").appendChild(th);
   }
+}
+
+function removeStudent(event) {
+  console.log(event.target.dataset.id);
+  let slectedStudent = event.target.dataset.id;
+
+  let selectedStudentIndex = findIndexByStudName(slectedStudent);
+  let removeStudObjekt = newStudArray.splice(selectedStudentIndex, 1);
+  filterList(houseData);
+  expelledStudentsArr.push(...removeStudObjekt);
+  console.table(expelledStudentsArr);
+  console.table(newStudArray);
+}
+
+// FIND STUDENT INDEX BY NAME
+function findIndexByStudName(name) {
+  return newStudArray.findIndex(stud => stud.firstname === name);
 }
