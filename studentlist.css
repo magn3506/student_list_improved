@@ -137,7 +137,8 @@ th {
 }
 
 .modal_fullname,
-.modal_house {
+.modal_house,
+.modal_blood {
   font-family: "Nanum Myeongjo", serif;
   font-size: 1.5em;
 }

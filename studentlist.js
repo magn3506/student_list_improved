@@ -6,6 +6,7 @@ window.addEventListener("DOMContentLoaded", init);
 let studTarget = document.querySelector("#student_template");
 let studOutput = document.querySelector("#stud_list_wrap");
 let allStud;
+let bloodList;
 let houseData = "alle";
 let filteredList;
 let modal;
@@ -46,6 +47,7 @@ const studentPrototype = {
     this.midname = this.midname();
     this.lastname = this.lastname();
     this.image = this.image();
+    this.blood = tjekBloodStatus(this.lastname);
   }
 };
 
@@ -57,7 +59,6 @@ function init() {
 
   // TODO: Load JSON, create clones, build list, add event listeners, show modal, find images, and other stuff ...
   getJSON();
-
   // FILTER BUTTONS
   clickFilterByHouse();
 }
@@ -71,9 +72,16 @@ async function getJSON() {
 
   allStud = await jsonObject.json();
 
+  let bloodStatusObjekt = await fetch(
+    "https://petlatkea.dk/2019/hogwarts/families.json"
+  );
+
+  bloodList = await bloodStatusObjekt.json();
+
   // NOTE: Maybe also call sortByFirst the first time ... Investigate!
   constructNewArrayFromJson();
   filterList(houseData);
+  console.log(bloodList.half);
 }
 
 function constructNewArrayFromJson() {
@@ -192,6 +200,7 @@ function displayList(students) {
     clone.querySelector(".first_name").textContent = stud.firstname;
     clone.querySelector(".last_name").textContent = stud.lastname;
     clone.querySelector(".house").textContent = stud.house;
+    clone.querySelector(".blood_status").textContent = stud.blood;
     clone.querySelector(".expel_but").dataset.id = stud.firstname;
     //SET HOUSE COCLOR
     clone
@@ -230,6 +239,8 @@ function makeModal(stud) {
 
   modal.querySelector(".modal_fullname").textContent = stud.fullname;
   modal.querySelector(".modal_house").textContent = stud.house;
+  modal.querySelector(".modal_blood").textContent = stud.blood;
+
   modal.querySelector(".expel_but").dataset.id = stud.firstname;
 
   //SET HOUSE COCLOR
@@ -283,8 +294,15 @@ function creatTableHeader() {
   document.querySelector("#stud_list_wrap").appendChild(tr);
 
   // FOR LOOP CREATES TABLE HEADER
-  let tableHeaerArr = ["Firstname", "Lastname", "House", "Image", "Expel"];
-  for (let i = 0; i < 5; i++) {
+  let tableHeaerArr = [
+    "Firstname",
+    "Lastname",
+    "House",
+    "Image",
+    "Blood Status",
+    "Expel"
+  ];
+  for (let i = 0; i < tableHeaerArr.length; i++) {
     let th = document.createElement("th");
     th.textContent = tableHeaerArr[i];
     document.querySelector("#tableHeader").appendChild(th);
@@ -306,4 +324,19 @@ function removeStudent(event) {
 // FIND STUDENT INDEX BY NAME
 function findIndexByStudName(name) {
   return newStudArray.findIndex(stud => stud.firstname === name);
+}
+
+// Tjek Blood Status
+
+function tjekBloodStatus(lastname) {
+  let halfList = bloodList.half;
+  // let pureList = bloodList.pure;
+
+  for (let i = 0; i < halfList.length; i++) {
+    if (lastname === halfList[i]) {
+      return "Mud-blood";
+    } else {
+      return "Pure-blood";
+    }
+  }
 }
