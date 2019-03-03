@@ -15,8 +15,17 @@ let modal;
 //Empty Array for expelled students
 let expelledStudentsArr = [];
 
+//Empty Array for students in the inquisitorial squad
+let inquisSquad = [];
+
 // Empty Array for new data
 let newStudArray = [];
+const myObject = [
+  {
+    fullname: "Magnus Vagn Jensen",
+    house: "Hufflepuff"
+  }
+];
 
 // Student Prototype
 const studentPrototype = {
@@ -74,6 +83,8 @@ async function getJSON() {
   );
 
   allStud = await jsonObject.json();
+
+  allStud.push(...myObject);
 
   let bloodStatusObjekt = await fetch(
     "https://petlatkea.dk/2019/hogwarts/families.json"
@@ -213,6 +224,7 @@ function displayList(students) {
     clone.querySelector(".house").textContent = stud.house;
     clone.querySelector(".blood_status").textContent = stud.blood;
     clone.querySelector(".expel_but").dataset.id = stud.firstname;
+
     //SET HOUSE COCLOR
     clone
       .querySelector(".stud_wrap")
@@ -221,7 +233,11 @@ function displayList(students) {
     // calls makemodal.
     clone.querySelector(".stud_wrap").addEventListener("click", event => {
       let buttData = event.target.dataset.id;
-      if (buttData === stud.firstname) {
+      console.log(buttData + " " + myObject.fi);
+
+      if (buttData === "Magnus") {
+        alert("HAHHAHAHAH");
+      } else if (buttData === stud.firstname) {
         removeStudent(event);
       } else {
         makeModal(stud);
@@ -267,11 +283,6 @@ function creatTableHeader() {
 function makeModal(stud) {
   modal = document.querySelector("#modal_wrapper");
 
-  modal.querySelector(".expel_but").addEventListener("click", event => {
-    removeStudent(event);
-    hideModal(modal);
-  });
-
   let imagePath = "images/" + stud.image + ".png";
   modal.querySelector(".modal_img").src = imagePath;
 
@@ -281,13 +292,22 @@ function makeModal(stud) {
   modal.querySelector(".house_crest").style.backgroundImage = `url(images/${
     stud.house
   }.png)`;
-  modal.querySelector(".expel_but").dataset.id = stud.firstname;
 
-  //SET HOUSE COCLOR
+  //SETS DATA ID
+  modal.querySelector(".inquis_but").dataset.id = "";
+  modal.querySelector(".inquis_but").dataset.id = stud.firstname;
+  modal.querySelector(".inquis_but").dataset.blood = stud.blood;
+  modal.querySelector(".inquis_but").dataset.house = stud.house;
 
   document.querySelector(".modal_close").addEventListener("click", () => {
     hideModal(modal);
   });
+
+  // SET EVENT LISTENR FOR INQUIS BUTTIEN
+  modal
+    .querySelector(".inquis_but")
+    .addEventListener("click", tjekCriteriaForInqSquad);
+
   showModal(modal, stud);
 }
 function showModal(modal, stud) {
@@ -447,3 +467,88 @@ function countingStudents() {
 
   console.log(total);
 }
+
+// INQUISITOTIAL
+// --------------------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------------------
+
+function tjekCriteriaForInqSquad() {
+  let blood = this.dataset.blood;
+  let house = this.dataset.house;
+  let clicked = this.dataset.clicked;
+  let id = this.dataset.id;
+
+  if (blood == "Pure Blood") {
+    addToInquisSquad(this);
+  } else if (house == "Slytherin") {
+    addToInquisSquad(this);
+  } else {
+    alert(
+      "Only studens who are pure-blood or from Slytherin house can join the squad"
+    );
+  }
+
+  function addToInquisSquad(e) {
+    let listEmpty = inquisSquad[0];
+
+    let tjek = false;
+    if (inquisSquad.length > 0) {
+      inquisSquad.forEach(member => {
+        if (member.firstname === e.dataset.id) {
+          tjek = true;
+        }
+      });
+    }
+
+    if (listEmpty === undefined || tjek == false) {
+      let slectedStudent = e.dataset.id;
+      let selectedStudentIndex = findIndexByStudName(slectedStudent);
+      let selectedStudentData = newStudArray[selectedStudentIndex];
+      inquisSquad.push(selectedStudentData);
+      displayInquisSquad(inquisSquad);
+    } else if (tjek == true) {
+      alert("student is alreader a member");
+    }
+  }
+}
+
+function displayInquisSquad(list) {
+  document.querySelector(".inquis_stud_con").textContent = "";
+  list.forEach(inqStud => {
+    let li = document.createElement("li");
+    let button = document.createElement("button");
+    button.dataset.name = inqStud.firstname;
+
+    li.textContent = inqStud.fullname;
+    button.textContent = "remove from squad";
+    li.appendChild(button);
+    document.querySelector(".inquis_stud_con").appendChild(li);
+  });
+  removeFromSquadClick();
+
+  console.table(inquisSquad);
+}
+
+function removeFromSquadClick() {
+  document.querySelectorAll(".inquis_stud_con li button").forEach(knap => {
+    knap.addEventListener("click", removeFromSquad);
+  });
+}
+
+function removeFromSquad() {
+  console.dir(this.dataset.name);
+  let slectedStudent = this.dataset.name;
+  let selectedStudentIndex = findIndexOfInqSquad(slectedStudent);
+  // console.log(inquisSquad);
+  // console.log(this.firstname);
+  // console.log(selectedStudentIndex);
+  inquisSquad.splice(selectedStudentIndex, 1);
+  displayInquisSquad(inquisSquad);
+  // console.table(inquisSquad);
+}
+
+// FIND STUDENT OF SQUAD INDEX BY NAME
+function findIndexOfInqSquad(name) {
+  return inquisSquad.findIndex(stud => stud.firstname === name);
+}
+//--------------------------------------------------------------------------------------------------------
