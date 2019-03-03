@@ -5,12 +5,18 @@ window.addEventListener("DOMContentLoaded", init);
 // GLOBALS
 let studTarget = document.querySelector("#student_template");
 let studOutput = document.querySelector("#stud_list_wrap");
+// 1.Json OBJ
 let allStud;
+// 2. Json obj
 let bloodList;
 let houseData = "alle";
 let filteredList;
 let modal;
+//Empty Array for expelled students
 let expelledStudentsArr = [];
+
+// Empty Array for new data
+let newStudArray = [];
 
 // Student Prototype
 const studentPrototype = {
@@ -29,13 +35,12 @@ const studentPrototype = {
     return letter[letter.length - 1];
   },
   image() {
-    const letter = this.fullname.split(" ");
+    const letter = this.fullname.split(/[ -]/);
     const firstNameLow = letter[0].toLocaleLowerCase();
     const firstNameFirstLetter = Array.from(firstNameLow)[0];
     const LasttNameLow = letter[letter.length - 1].toLocaleLowerCase();
 
     return `${LasttNameLow}_${firstNameFirstLetter}`;
-    console.log(`${LasttNameLow}_${firstNameFirstLetter}`);
   },
   setData(stud) {
     this.fullname = stud.fullname;
@@ -51,9 +56,7 @@ const studentPrototype = {
   }
 };
 
-// Empty Array for new data
-let newStudArray = [];
-
+//INIT
 function init() {
   console.log("init");
 
@@ -84,6 +87,7 @@ async function getJSON() {
   console.log(bloodList.half);
 }
 
+// MAKE A NewStudArray
 function constructNewArrayFromJson() {
   console.log("constructNewArrayFromJson");
 
@@ -94,7 +98,10 @@ function constructNewArrayFromJson() {
   });
 }
 
-//TO BE CALLED IN GET JSON
+//FILTER -------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+
 function clickFilterByHouse() {
   // EVENTLISTENER
   document.querySelectorAll(".filter_knap").forEach(knap => {
@@ -109,7 +116,6 @@ function clickFilterByHouse() {
     });
   });
 }
-
 function filterList(houseData) {
   filteredList = filterByHouse(houseData);
 
@@ -117,8 +123,6 @@ function filterList(houseData) {
 
   displayList(filteredList);
 }
-
-// FILTER
 function filterByHouse(house) {
   // console.log("filterByHouse");
   function filterHouse(element) {
@@ -130,8 +134,12 @@ function filterByHouse(house) {
   }
   return newStudArray.filter(filterHouse);
 }
+//--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
 
-// SORTING
+//SORTING ------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
 function clickSortBy() {
   document.querySelectorAll(".sort_knap").forEach(knap => {
     knap.addEventListener("click", function() {
@@ -155,7 +163,6 @@ function clickSortBy() {
     });
   });
 }
-
 function sortListByFirstName(a, b) {
   if (a.firstname < b.firstname) {
     return -1;
@@ -179,13 +186,17 @@ function sortListByHouse(a, b) {
     return 1;
   }
 }
+//--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
 
-// DISPLAY LIST
+//DISPLAY LIST -------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
 function displayList(students) {
   console.log("displayList");
   // FUNCTION THAT CLEARS INNTER HTML OF OUTPUT
   clearList();
-
+  // COUNTER
+  countingStudents(students);
   //Creates table header before students are put in
   creatTableHeader();
 
@@ -226,67 +237,7 @@ function clearList() {
   console.log("Clear LIST");
   studOutput.innerHTML = " ";
 }
-
-// MODAL -------------------------------------------
-function makeModal(stud) {
-  modal = document.querySelector("#modal_wrapper");
-  showModal(modal, stud);
-
-  console.log(stud.house);
-
-  let imagePath = "images/" + stud.image + ".png";
-  modal.querySelector(".modal_img").src = imagePath;
-
-  modal.querySelector(".modal_fullname").textContent = stud.fullname;
-  modal.querySelector(".modal_house").textContent = stud.house;
-  modal.querySelector(".modal_blood").textContent = stud.blood;
-
-  modal.querySelector(".expel_but").dataset.id = stud.firstname;
-
-  //SET HOUSE COCLOR
-
-  document.querySelector(".modal_close").addEventListener("click", () => {
-    hideModal(modal);
-  });
-  modal.querySelector(".expel_but").addEventListener("click", event => {
-    console.log(event.target);
-    hideModal(modal);
-    removeStudent(event);
-  });
-}
-
-function showModal(modal, stud) {
-  modal.style.display = "block";
-
-  //DRYYYYYYYYY!!!!!
-  if (stud.house === "Gryffindor") {
-    modal.querySelector(".modal_con").classList.add("gryffindor");
-  }
-
-  if (stud.house === "Hufflepuff") {
-    modal.querySelector(".modal_con").classList.add("hufflepuff");
-  }
-
-  if (stud.house === "Ravenclaw") {
-    modal.querySelector(".modal_con").classList.add("ravenclaw");
-  }
-
-  if (stud.house === "Slytherin") {
-    modal.querySelector(".modal_con").classList.add("slytherin");
-  }
-  //DRYYYY!Y!!Y!Y!Y
-}
-
-function hideModal(modal) {
-  modal.style.display = "none";
-
-  modal.querySelector(".modal_con").classList.remove("hufflepuff");
-  modal.querySelector(".modal_con").classList.remove("ravenclaw");
-  modal.querySelector(".modal_con").classList.remove("gryffindor");
-  modal.querySelector(".modal_con").classList.remove("slytherin");
-}
-// MODAL END ----------------------------------------
-
+//--------------------------------------------------------------------------------------------------------
 // CREATES TABLE HEADER
 function creatTableHeader() {
   let tr = document.createElement("tr");
@@ -308,27 +259,97 @@ function creatTableHeader() {
     document.querySelector("#tableHeader").appendChild(th);
   }
 }
+//--------------------------------------------------------------------------------------------------------
+
+//MODAL --------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+function makeModal(stud) {
+  modal = document.querySelector("#modal_wrapper");
+
+  modal.querySelector(".expel_but").addEventListener("click", event => {
+    removeStudent(event);
+    hideModal(modal);
+  });
+
+  let imagePath = "images/" + stud.image + ".png";
+  modal.querySelector(".modal_img").src = imagePath;
+
+  modal.querySelector(".modal_fullname").textContent = stud.fullname;
+  modal.querySelector(".modal_house").textContent = stud.house;
+  modal.querySelector(".modal_blood").textContent = stud.blood;
+  modal.querySelector(".house_crest").style.backgroundImage = `url(images/${
+    stud.house
+  }.png)`;
+  modal.querySelector(".expel_but").dataset.id = stud.firstname;
+
+  //SET HOUSE COCLOR
+
+  document.querySelector(".modal_close").addEventListener("click", () => {
+    hideModal(modal);
+  });
+  showModal(modal, stud);
+}
+function showModal(modal, stud) {
+  modal.style.display = "block";
+
+  if (stud.house === "Gryffindor") {
+    modal.querySelector(".modal_con").classList.add("gryffindor");
+  }
+
+  if (stud.house === "Hufflepuff") {
+    modal.querySelector(".modal_con").classList.add("hufflepuff");
+  }
+
+  if (stud.house === "Ravenclaw") {
+    modal.querySelector(".modal_con").classList.add("ravenclaw");
+  }
+
+  if (stud.house === "Slytherin") {
+    modal.querySelector(".modal_con").classList.add("slytherin");
+  }
+}
+function hideModal(modal) {
+  modal.style.display = "none";
+
+  modal.querySelector(".modal_con").classList.remove("hufflepuff");
+  modal.querySelector(".modal_con").classList.remove("ravenclaw");
+  modal.querySelector(".modal_con").classList.remove("gryffindor");
+  modal.querySelector(".modal_con").classList.remove("slytherin");
+}
+//--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+
+//REMOVE STUDENT------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
 
 function removeStudent(event) {
-  console.log(event.target.dataset.id);
-  let slectedStudent = event.target.dataset.id;
+  // console.dir(event.target.dataset.id + " " + "was expelled");
+  let e_but = event.target.getAttribute("class");
 
-  let selectedStudentIndex = findIndexByStudName(slectedStudent);
-  let removeStudObjekt = newStudArray.splice(selectedStudentIndex, 1);
-  filterList(houseData);
-  expelledStudentsArr.push(...removeStudObjekt);
+  if (e_but === "expel_but") {
+    let slectedStudent = event.target.dataset.id;
+    console.log(slectedStudent + " " + "WAS CLICKED");
+    let selectedStudentIndex = findIndexByStudName(slectedStudent);
+    console.log(selectedStudentIndex + " " + "?");
 
-  displayExpelled(expelledStudentsArr);
-  console.table(expelledStudentsArr);
-  console.table(newStudArray);
+    let removeStudObjekt = newStudArray.splice(selectedStudentIndex, 1);
+    expelledStudentsArr.push(...removeStudObjekt);
+    displayExpelled(expelledStudentsArr);
+    filterList(houseData);
+  }
 }
+//--------------------------------------------------------------------------------------------------------
 
 // FIND STUDENT INDEX BY NAME
 function findIndexByStudName(name) {
+  console.log(newStudArray);
   return newStudArray.findIndex(stud => stud.firstname === name);
 }
+//--------------------------------------------------------------------------------------------------------
 
 // Tjek Blood Status
+//--------------------------------------------------------------------------------------------------------
 
 function tjekBloodStatus(lastname) {
   let halfList = bloodList.half;
@@ -353,15 +374,16 @@ function tjekBloodStatus(lastname) {
   }
 
   if (pure == true && half == true) {
-    return "Mudd Blood";
+    return "Half Blood";
   } else if (pure == false && half == true) {
-    return "Mudd Blood";
+    return "Half Blood";
   } else if (pure == true && half == false) {
-    return "Pure";
+    return "Pure Blood";
   } else if (pure == false && half == false) {
     return "Muggle";
   }
 }
+//--------------------------------------------------------------------------------------------------------
 
 //DISPLAY Expledded STUDENT LIST
 function displayExpelled(expelStudList) {
@@ -372,4 +394,56 @@ function displayExpelled(expelStudList) {
     li.textContent = exStud.fullname;
     document.querySelector(".expel_stud_con").appendChild(li);
   });
+}
+//--------------------------------------------------------------------------------------------------------
+
+function countingStudents() {
+  //VARIABLE FOR NUMBER OF STUD IN EACH HOUSE
+  let G_count = 0;
+  let H_count = 0;
+  let S_count = 0;
+  let R_count = 0;
+  let total = allStud.length - expelledStudentsArr.length;
+
+  // COUNTS ++ FOR EACH HOUSE
+  allStud.forEach(stud => {
+    if (stud.house === "Gryffindor") {
+      G_count++;
+    }
+    if (stud.house === "Hufflepuff") {
+      H_count++;
+    }
+    if (stud.house === "Slytherin") {
+      S_count++;
+    }
+    if (stud.house === "Ravenclaw") {
+      R_count++;
+    }
+  });
+  // COUNTS -- FOR EACH GOUSE IN EXPELLED
+  expelledStudentsArr.forEach(stud => {
+    if (stud.house === "Gryffindor") {
+      G_count--;
+    }
+    if (stud.house === "Hufflepuff") {
+      H_count--;
+    }
+    if (stud.house === "Slytherin") {
+      S_count--;
+    }
+    if (stud.house === "Ravenclaw") {
+      R_count--;
+    }
+  });
+
+  // DUSPLAYS NUMBERS IN "LIST COUNTER"
+  document.querySelector(".total").textContent = total;
+  document.querySelector(".gryf_count").textContent = G_count;
+  document.querySelector(".huff_count").textContent = H_count;
+  document.querySelector(".slyth_count").textContent = S_count;
+  document.querySelector(".raven_count").textContent = R_count;
+  document.querySelector(".expelled_count").textContent =
+    expelledStudentsArr.length;
+
+  console.log(total);
 }
