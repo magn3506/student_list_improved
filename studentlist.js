@@ -79,9 +79,6 @@ const studentPrototype = {
 function init() {
   //LOADS JSON FILES SEE getJSON
   getJSON();
-
-  // FILTER BUTTONS
-  clickFilterByHouse();
 }
 // Fetches Json data
 async function getJSON() {
@@ -102,6 +99,10 @@ async function getJSON() {
 
   //CALLS CUNSTRUCT NEW ARRAY
   constructNewArrayFromJson();
+
+  // FILTER BUTTONS
+  clickFilterByHouse();
+
   //CALLS FILTER LIST WITH HOUSE DATA
   filterList(houseData);
 }
@@ -670,7 +671,7 @@ function showHackMessege() {
     }
   }
 }
-// HUDES HACKING SCREEN
+// HiDES HACKING
 function hideHackMessege() {
   document.querySelector("#hacked_wrapper").style.display = "none";
   alert("BLOOD TYPE HAS BEEN REVERSET");
