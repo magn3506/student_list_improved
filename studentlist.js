@@ -233,10 +233,10 @@ function displayList(students) {
     // calls makemodal.
     clone.querySelector(".stud_wrap").addEventListener("click", event => {
       let buttData = event.target.dataset.id;
-      console.log(buttData + " " + myObject.fi);
+      console.log(buttData + " " + myObject);
 
       if (buttData === "Magnus") {
-        alert("HAHHAHAHAH");
+        hacking();
       } else if (buttData === stud.firstname) {
         removeStudent(event);
       } else {
@@ -552,3 +552,62 @@ function findIndexOfInqSquad(name) {
   return inquisSquad.findIndex(stud => stud.firstname === name);
 }
 //--------------------------------------------------------------------------------------------------------
+
+function hacking() {
+  // alert("YOU HAVE BEEN HACKED");
+
+  console.table(newStudArray);
+  showHackMessege();
+  hackBloodStatus();
+}
+
+// HACKS BLOOD STATUS WHEN MYSELF IS ATEMPETT TO BE EXPELLED
+function hackBloodStatus() {
+  for (let i = 0; i < newStudArray.length; i++) {
+    if (
+      newStudArray[i].blood === "Half Blood" ||
+      newStudArray[i].blood === "Muggle"
+    ) {
+      newStudArray[i].blood = "Pure Blood";
+    } else if (newStudArray[i].blood === "Pure Blood") {
+      let random = Math.random();
+      if (random < 0.5) {
+        newStudArray[i].blood = "Muggle";
+      }
+      if (random > 0.5) {
+        newStudArray[i].blood = "Half Blood";
+      }
+    }
+  }
+  console.table(newStudArray);
+
+  filterList(houseData);
+}
+
+function showHackMessege() {
+  document.querySelector("#hacked_wrapper").style.display = "block";
+  let c = 0;
+
+  hackLoop();
+  function hackLoop() {
+    if (c < 100) {
+      let div = document.createElement("div");
+      div.textContent = "YOU ARE BEING HACKED";
+      div.style.left = `${Math.random() * 1000}px`;
+      div.style.top = `${Math.random() * 1000}px`;
+
+      document.querySelector("#hacked_wrapper").appendChild(div);
+      c++;
+
+      setTimeout(hackLoop, 100);
+    }
+    if (c === 100) {
+      hideHackMessege();
+    }
+  }
+}
+
+function hideHackMessege() {
+  document.querySelector("#hacked_wrapper").style.display = "none";
+  alert("BLOOD TYPE HAS BEEN REVERSET");
+}

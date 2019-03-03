@@ -243,3 +243,30 @@ th {
   grid-template-columns: 1fr 1fr;
   text-align: center;
 }
+
+#hacked_wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  position: fixed;
+  top: 0%;
+  display: none;
+}
+
+#hacked_wrapper > * {
+  position: absolute;
+  border: solid greenyellow;
+  background-color: green;
+  color: white;
+  animation: pump 0.3s infinite alternate-reverse;
+  padding: 50px;
+}
+
+@keyframes pump {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+  }
+}
