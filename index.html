@@ -11,71 +11,75 @@
     />
   </head>
   <body>
-    <h1>Students 1991</h1>
-    <header>
-      <nav>
-        <div class="sort_con">
-          Sort by:
-          <button class="sort_knap" data-sort="firstname">First name</button>
-          <button class="sort_knap" data-sort="lastname">Last name</button>
-          <button class="sort_knap" data-sort="house">House</button>
+    <div class="page_wrapper">
+      <h1>Students 1991</h1>
+      <header>
+        <nav>
+          <div class="sort_con">
+            Sort by:
+            <button class="sort_knap" data-sort="firstname">First name</button>
+            <button class="sort_knap" data-sort="lastname">Last name</button>
+            <button class="sort_knap" data-sort="house">House</button>
 
-          <!-- <button class="sort_knap">house</button> -->
-        </div>
-        <div class="filter_con">
-          Filter by:
-          <button class="filter_knap" data-house="alle">alle</button>
-          <button class="filter_knap gryffindor" data-house="Gryffindor">
-            Gryffindor
-          </button>
-          <button class="filter_knap hufflepuff" data-house="Hufflepuff">
-            Hufflepuff
-          </button>
-          <button class="filter_knap ravenclaw" data-house="Ravenclaw">
-            Ravenclaw
-          </button>
-          <button class="filter_knap slytherin" data-house="Slytherin">
-            Slytherin
-          </button>
-        </div>
-      </nav>
-    </header>
+            <!-- <button class="sort_knap">house</button> -->
+          </div>
+          <div class="filter_con">
+            Filter by:
+            <button class="filter_knap" data-house="alle">alle</button>
+            <button class="filter_knap gryffindor" data-house="Gryffindor">
+              Gryffindor
+            </button>
+            <button class="filter_knap hufflepuff" data-house="Hufflepuff">
+              Hufflepuff
+            </button>
+            <button class="filter_knap ravenclaw" data-house="Ravenclaw">
+              Ravenclaw
+            </button>
+            <button class="filter_knap slytherin" data-house="Slytherin">
+              Slytherin
+            </button>
+          </div>
+        </nav>
+      </header>
 
-    <section id="table_wrapper">
-      <table id="stud_list_wrap"></table>
-    </section>
-
-    <section id="student_counter_wrap">
-      <table>
-        <tr>
-          <th>Totalt</th>
-          <th>Gryffindor</th>
-          <th>hufflepuff</th>
-          <th>Slytherin</th>
-          <th>Ravenclaw</th>
-          <th>Expelled</th>
-        </tr>
-        <tr>
-          <td class="total">100</td>
-          <td class="gryf_count">100</td>
-          <td class="huff_count">100</td>
-          <td class="slyth_count">100</td>
-          <td class="raven_count">100</td>
-          <td class="expelled_count">100</td>
-        </tr>
-      </table>
-    </section>
-
-    <div class="secondary_lists_wrapper">
-      <section id="expelled_students_wrap">
-        <h2>Expelled students</h2>
-        <ul class="expel_stud_con"></ul>
+      <section id="table_wrapper">
+        <table id="stud_list_wrap"></table>
       </section>
 
-      <section id="inquis_students_wrap">
-        <h2>Member of the Inquisitorial-Squad</h2>
-        <ul class="inquis_stud_con"></ul>
+      <section id="student_counter_wrap">
+        <table>
+          <tr>
+            <th>Totalt</th>
+            <th>Gryffindor</th>
+            <th>hufflepuff</th>
+            <th>Slytherin</th>
+            <th>Ravenclaw</th>
+            <th>Expelled</th>
+          </tr>
+          <tr>
+            <td class="total">100</td>
+            <td class="gryf_count">100</td>
+            <td class="huff_count">100</td>
+            <td class="slyth_count">100</td>
+            <td class="raven_count">100</td>
+            <td class="expelled_count">100</td>
+          </tr>
+        </table>
       </section>
+
+      <div class="secondary_lists_wrapper">
+        <section id="expelled_students_wrap">
+          <h2>Expelled students</h2>
+          <ul class="expel_stud_con"></ul>
+        </section>
+
+        <section id="inquis_students_wrap">
+          <h2>Member of the Inquisitorial-Squad</h2>
+          <ul class="inquis_stud_con"></ul>
+        </section>
+      </div>
+
+      <section id="hacked_wrapper" class="hack_hide"></section>
     </div>
     <!-- MODAL WINDOW  -->
     <section id="modal_wrapper">
@@ -109,9 +113,6 @@
         </div>
       </article>
     </section>
-
-    <section id="hacked_wrapper" class="hack_hide"></section>
-
     <!-- TEMPLATE FOR PRINT VIA JS -->
     <template id="student_template">
       <tr class="stud_wrap">
@@ -125,7 +126,6 @@
         </td>
       </tr>
     </template>
-
     <script src="studentlist.js"></script>
   </body>
 </html>

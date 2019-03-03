@@ -51,7 +51,8 @@ const studentPrototype = {
     return letter[letter.length - 1];
   },
   image() {
-    //SETS THE DATA FOR IMAGE PATH. lastname in lower case "_" + first letter of firstname in lowercase fx myself jensen_m
+    //SETS THE DATA FOR IMAGE PATH. lastname in lower case "_"
+    // + first letter of firstname in lowercase fx myself jensen_m
     const letter = this.fullname.split(/[ -]/);
     const firstNameLow = letter[0].toLocaleLowerCase();
     const firstNameFirstLetter = Array.from(firstNameLow)[0];

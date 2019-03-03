@@ -12,6 +12,11 @@ body {
   margin: 0;
 }
 
+.page_wrapper {
+  padding: 50px 200px;
+  background: rgb(173, 179, 190);
+}
+
 .gryffindor {
   background-color: #ce3a0a;
   color: #fdb02e;
